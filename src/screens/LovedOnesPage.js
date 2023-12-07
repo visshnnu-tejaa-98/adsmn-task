@@ -2,7 +2,12 @@ import Navbar from "../components/Navbar";
 import ProgressBar from "../components/ProgressBar";
 import GiftCap from "../assets/UI Images/Cap&Gift.png";
 import LovedOnesFrom from "./LovedOnesForm";
+import { useContext } from "react";
+import AppContext from "../contexts/appContext";
+import Toast from "../components/Toast";
 const LovedOnesPage = () => {
+  const { showToast } = useContext(AppContext);
+
   return (
     <div>
       <Navbar />
@@ -16,6 +21,11 @@ const LovedOnesPage = () => {
       <div className="">
         <LovedOnesFrom />
       </div>
+      {showToast && (
+        <div className="absolute top-5 toast-align block text-center">
+          <Toast />
+        </div>
+      )}
     </div>
   );
 };

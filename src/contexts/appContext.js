@@ -14,6 +14,7 @@ const AppContext = createContext({
   singerVoice: null,
   lyrics: null,
   overlay: false,
+  showToast: false,
 });
 
 export const AppContextProvider = (props) => {
@@ -31,11 +32,21 @@ export const AppContextProvider = (props) => {
     singerVoice: null,
     lyrics: null,
   });
+  const [showToast, setShowToast] = useState(false);
   const [overlay, setOverlay] = useState(false);
-  console.log(userDetails);
+  const [warning, setWarning] = useState(null);
   return (
     <AppContext.Provider
-      value={{ userDetails, setUserDetails, overlay, setOverlay }}
+      value={{
+        userDetails,
+        overlay,
+        showToast,
+        warning,
+        setOverlay,
+        setShowToast,
+        setUserDetails,
+        setWarning,
+      }}
     >
       {props.children}
     </AppContext.Provider>

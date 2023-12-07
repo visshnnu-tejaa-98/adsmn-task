@@ -6,10 +6,17 @@ import RegistrationForm from "../components/RegistrationForm";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppContext from "../contexts/appContext";
+import Toast from "../components/Toast";
 
 const RegistrationPage = () => {
-  // const [overLay, setOverLay] = useState(false);
-  const { overlay, setOverlay } = useContext(AppContext);
+  const [otp, setOtp] = useState({
+    digitOne: null,
+    digitTwo: null,
+    digitThree: null,
+    digitFour: null,
+  });
+  const { overlay, setOverlay, showToast, setWarning, setShowToast } =
+    useContext(AppContext);
   const navigate = useNavigate();
   return (
     <div>
@@ -37,24 +44,36 @@ const RegistrationPage = () => {
                   min={0}
                   max={9}
                   className="text-white bg-[#320071] w-[2rem] h-[2.2rem] rounded-md font-bold p-1 text-center"
+                  value={otp.digitOne}
+                  onChange={(e) => setOtp({ ...otp, digitOne: e.target.value })}
                 />
                 <input
                   type="number"
                   min={0}
                   max={9}
                   className="text-white bg-[#320071] w-[2rem] h-[2.2rem] rounded-md font-bold p-1 text-center"
+                  value={otp.digitTwo}
+                  onChange={(e) => setOtp({ ...otp, digitTwo: e.target.value })}
                 />
                 <input
                   type="number"
                   min={0}
                   max={9}
                   className="text-white bg-[#320071] w-[2rem] h-[2.2rem] rounded-md font-bold p-1 text-center"
+                  value={otp.digitThree}
+                  onChange={(e) =>
+                    setOtp({ ...otp, digitThree: e.target.value })
+                  }
                 />
                 <input
                   type="number"
                   min={0}
                   max={9}
                   className="text-white bg-[#320071] w-[2rem] h-[2.2rem] rounded-md font-bold p-1 text-center"
+                  value={otp.digitFour}
+                  onChange={(e) =>
+                    setOtp({ ...otp, digitFour: e.target.value })
+                  }
                 />
               </div>
               <p className="text-right mr-4 font-semibold text-sm text-[#320071] underline underline-offset-2">
@@ -64,8 +83,24 @@ const RegistrationPage = () => {
                 <button
                   className={`bg-[#E7B463] py-2 px-5 rounded-lg text-[#320071] font-bold`}
                   onClick={() => {
-                    setOverlay(false);
-                    navigate("/lovedones");
+                    if (
+                      otp?.digitOne?.toString().length === 1 &&
+                      otp?.digitTwo?.toString().length === 1 &&
+                      otp?.digitThree?.toString().length === 1 &&
+                      otp?.digitFour?.toString().length === 1
+                    ) {
+                      setOverlay(false);
+                      navigate("/lovedones");
+                    } else {
+                      const myPromise = new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                          resolve("Toggle Toast");
+                        }, 1500);
+                      });
+                      setShowToast(true);
+                      setWarning("Please Enter a Valid OTP");
+                      myPromise.then(() => setShowToast(false));
+                    }
                   }}
                 >
                   Submit
@@ -73,6 +108,11 @@ const RegistrationPage = () => {
               </div>
             </div>
           </div>
+        </div>
+      )}
+      {showToast && (
+        <div className="absolute top-5 toast-align block text-center">
+          <Toast />
         </div>
       )}
     </div>

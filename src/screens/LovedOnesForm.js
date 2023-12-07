@@ -10,18 +10,28 @@ const LovedOnesFrom = () => {
   const [inviteeName, setInviteeName] = useState("");
   const [age, setAge] = useState(null);
   const [gender, setGender] = useState("male");
-  const [warning, setWarning] = useState(null);
 
-  const { userDetails, setUserDetails } = useContext(AppContext);
+  const { userDetails, setUserDetails, setWarning, setShowToast } =
+    useContext(AppContext);
 
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (!(age >= 0 && age < 100)) {
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve("Toggle Toast");
+      }, 1500);
+    });
+    if (Number(age) < 0 || Number(age) > 100 || age === null) {
+      setShowToast(true);
       setWarning("Please Enter a Valid Age");
+      myPromise.then(() => setShowToast(false));
       return;
-    } else if (inviteeName.length > 30) {
+    }
+    if (inviteeName.length > 30 || inviteeName === "") {
+      setShowToast(true);
       setWarning("Length of the name should be lessthan 30 characters");
+      myPromise.then(() => setShowToast(false));
       return;
     } else {
       setUserDetails({
@@ -42,7 +52,7 @@ const LovedOnesFrom = () => {
           type="name"
           name="name"
           placeholder="XXXXXXXXXXXX"
-          autocomplete="off"
+          autoComplete="off"
           value={inviteeName}
           onChange={(e) => setInviteeName(e.target.value)}
         />
@@ -54,7 +64,7 @@ const LovedOnesFrom = () => {
           type="number"
           name="name"
           placeholder="Your Age"
-          autocomplete="off"
+          autoComplete="off"
           min="1"
           max="100"
           value={age}
@@ -71,11 +81,11 @@ const LovedOnesFrom = () => {
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
+        <p className="text-white"></p>
         <div className="flex justify-center py-4">
           <button
-            disabled={!(age >= 0 && age < 100 && !inviteeName?.length < 30)}
             className={`bg-[#E7B463] py-2 px-5 rounded-lg text-[#320071] font-bold ${
-              !(age >= 0 && age < 100 && inviteeName?.length > 30)
+              !inviteeName.length || !age
                 ? "cursor-pointer"
                 : "cursor-not-allowed"
             }`}

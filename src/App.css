@@ -13,3 +13,10 @@
   top: 0;
   opacity: 50%;
 }
+
+.toast {
+  z-index: 999;
+}
+.toast-align {
+  left: calc(calc(calc(100vw - 20rem) / 2));
+}

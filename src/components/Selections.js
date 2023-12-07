@@ -23,7 +23,6 @@ const Selections = ({}) => {
 
   const { userDetails, setUserDetails } = useContext(AppContext);
   const navigate = useNavigate();
-  console.log(111, process.env.REACT_APP_API_KEY);
   const openai = new OpenAI({
     apiKey: process.env.REACT_APP_API_KEY,
     dangerouslyAllowBrowser: true,
@@ -55,12 +54,10 @@ const Selections = ({}) => {
     
     The lyrics generated should be completely unique and never written before every single time and should not in any way or manner infringe on any trademarks/copyrights or any other rights of any individual or entity anywhere in the world. Any references or similarity to existing lyrics of any song anywhere in the world needs to be completely avoided. Any mention of proper nouns i.e. names or places of any manner apart from the ones mentioned above needs to be completely avoided. The lyrics generated should not be insensitive or should not offend any person/ place/ caste/ religion/ creed/ tribe/ country/ gender/ government/ organisation or any entity or individual in any manner whatsoever. Any words which might be construed directly or indirectly as cuss words or are offensive in any language should also be completely avoided.
     `;
-    console.log(dataToChatGpt);
     getData(dataToChatGpt);
   };
 
   const getData = async (dataToChatGpt) => {
-    console.log("Triggered!!");
     const completion = await openai.chat.completions.create({
       messages: [{ role: "system", content: dataToChatGpt }],
       model: "gpt-3.5-turbo",
@@ -69,7 +66,6 @@ const Selections = ({}) => {
       ...userDetails,
       lyrics: completion.choices[0]?.message?.content,
     });
-    console.log(111, completion.choices[0]?.message?.content);
     setLoading(false);
     navigate("/lyrics");
   };
@@ -191,7 +187,7 @@ const Selections = ({}) => {
               <svg
                 aria-hidden="true"
                 role="status"
-                class="inline w-4 h-4 me-3 text-[#320071] animate-spin"
+                className="inline w-4 h-4 me-3 text-[#320071] animate-spin"
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
